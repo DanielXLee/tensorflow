@@ -60,8 +60,6 @@ def _build_function_page(page_info):
   parts = [_Metadata(page_info.full_name).build_html()]
   parts.append('# %s\n\n' % page_info.full_name)
 
-  parts.append('# %s\n\n' % page_info.full_name)
-
   if len(page_info.aliases) > 1:
     parts.append('### Aliases:\n\n')
     parts.extend('* `%s`\n' % name for name in page_info.aliases)
@@ -302,7 +300,7 @@ def _build_function_details(function_details):
     sub.append('#### ' + detail.keyword + ':\n\n')
     sub.append(detail.header)
     for key, value in detail.items:
-      sub.append('* <b>`%s`</b>:%s' % (key, value))
+      sub.append('* <b>`%s`</b>: %s' % (key, value))
     parts.append(''.join(sub))
 
   return '\n'.join(parts)

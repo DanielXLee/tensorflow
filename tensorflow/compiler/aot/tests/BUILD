@@ -13,9 +13,11 @@ test_suite(
         ":test_graph_tfadd_test",
         ":test_graph_tfadd_with_ckpt_saver_test",
         ":test_graph_tfadd_with_ckpt_test",
+        ":test_graph_tffunction_test",
         ":test_graph_tfgather_test",
         ":test_graph_tfmatmul_test",
         ":test_graph_tfmatmulandadd_test",
+        ":test_graph_tfsplits_test",
         ":tfcompile_test",
     ],
 )
@@ -33,6 +35,7 @@ py_binary(
         "//tensorflow/python:framework_for_generated_wrappers",
         "//tensorflow/python:math_ops",
         "//tensorflow/python:platform",
+        "//tensorflow/python:session",
         "//tensorflow/python:training",
         "//tensorflow/python:variables",
     ],
@@ -43,15 +46,16 @@ genrule(
     testonly = 1,
     outs = [
         "test_graph_tfadd.pb",
-        "test_graph_tfadd_with_ckpt.pb",
         "test_graph_tfadd_with_ckpt.ckpt",
-        "test_graph_tfadd_with_ckpt_saver.pb",
+        "test_graph_tfadd_with_ckpt.pb",
         "test_graph_tfadd_with_ckpt_saver.ckpt",
+        "test_graph_tfadd_with_ckpt_saver.pb",
         "test_graph_tfadd_with_ckpt_saver.saver",
+        "test_graph_tffunction.pb",
         "test_graph_tfgather.pb",
         "test_graph_tfmatmul.pb",
         "test_graph_tfmatmulandadd.pb",
-        "test_graph_tffunction.pb",
+        "test_graph_tfsplits.pb",
     ],
     cmd = "$(location :make_test_graphs) --out_dir $(@D)",
     tags = ["manual"],
@@ -89,6 +93,15 @@ tf_library(
 )
 
 tf_library(
+    name = "test_graph_tffunction",
+    testonly = 1,
+    config = "test_graph_tffunction.config.pbtxt",
+    cpp_class = "FunctionComp",
+    graph = "test_graph_tffunction.pb",
+    tags = ["manual"],
+)
+
+tf_library(
     name = "test_graph_tfgather",
     testonly = 1,
     config = "test_graph_tfgather.config.pbtxt",
@@ -116,11 +129,11 @@ tf_library(
 )
 
 tf_library(
-    name = "test_graph_tffunction",
+    name = "test_graph_tfsplits",
     testonly = 1,
-    config = "test_graph_tffunction.config.pbtxt",
-    cpp_class = "FunctionComp",
-    graph = "test_graph_tffunction.pb",
+    config = "test_graph_tfsplits.config.pbtxt",
+    cpp_class = "SplitsComp",
+    graph = "test_graph_tfsplits.pb",
     tags = ["manual"],
 )
 
@@ -136,6 +149,7 @@ cc_test(
         ":test_graph_tfgather",
         ":test_graph_tfmatmul",
         ":test_graph_tfmatmulandadd",
+        ":test_graph_tfsplits",
         "//tensorflow/core:test",
         "//tensorflow/core:test_main",
         "//third_party/eigen3",

@@ -2,12 +2,9 @@
 
 package(
     default_visibility = ["//tensorflow:internal"],
-    features = ["-layering_check"],
 )
 
 licenses(["notice"])  # Apache 2.0
-
-exports_files(["LICENSE"])
 
 filegroup(
     name = "all_files",
@@ -45,8 +42,9 @@ cc_test(
     name = "periodic_function_test",
     srcs = ["periodic_function_test.cc"],
     deps = [
-        ":periodic_function",
+        ":periodic_function_dynamic",
         "//tensorflow/contrib/batching/test_util:fake_clock_env",
+        "//tensorflow/core:test",
         "//tensorflow/core:test_main",
     ],
 )

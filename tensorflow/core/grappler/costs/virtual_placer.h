@@ -40,8 +40,9 @@ class VirtualPlacer {
 
  private:
   std::unordered_map<string, DeviceProperties> devices_;
-  bool has_gpu_;
-  DeviceProperties unknown_device_;
+  string default_device_;
+  string default_job_name_;
+  const string& get_default_device_name() const;
 };
 
 }  // namespace grappler
